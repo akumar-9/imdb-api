@@ -69,6 +69,7 @@ namespace IMDB_api.Services
             {
                 Id = m.Id,
                 Name = m.Name,
+                YearOfRelease = m.YearOfRelease,
                 Plot = m.Plot,
                 Poster = m.Poster,
                 Producer = _producerRepository.Get(m.ProducerId),
