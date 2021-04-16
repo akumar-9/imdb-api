@@ -10,7 +10,7 @@ namespace IMDB_api.Repositories.Interfaces
     {
         public Producer Get(int id);
         public IEnumerable<Producer> GetAll();
-        public void Add(Producer producer);
+        public int Add(Producer producer);
         public void Update(Producer producer);
         public void Delete(int id);
     }

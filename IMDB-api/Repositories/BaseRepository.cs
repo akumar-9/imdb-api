@@ -23,10 +23,11 @@ namespace IMDB_api.Repositories
             return connection.Query<T>(sql);
         }
 
-        public void Add(string sql, T entity)
+        public int Add(string sql, T entity)
         {
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
-            connection.Execute(sql, entity);
+            var id = connection.QuerySingle<int>(sql, entity);
+            return id;
         }
 
         public void Delete(string sql, int id)

@@ -14,17 +14,17 @@ namespace IMDB_api.Repositories
 {
     public class MovieRepository : IMovieRepository
     {
-        ConnectionString _connectionString;
+        readonly ConnectionString _connectionString;
         public MovieRepository(IOptions<ConnectionString> options)
         {
             _connectionString = options.Value;
         }
      
-        public void Add(Movie movie, string actorIds, string genreIds)
+        public int Add(Movie movie, string actorIds, string genreIds)
         {
             const string sql = @"EXEC usp_AddMovie @Name, @Plot, @YearOfRelease, @Poster, @ProducerId, @ActorIds, @GenreIds";           
             using var connection = new SqlConnection(_connectionString.DefaultConnection);                
-                var affected = connection.Query(sql, new
+                var id = connection.QueryFirst<int>(sql, new
                 {
                     movie.Name,
                     movie.Plot,
@@ -34,6 +34,7 @@ namespace IMDB_api.Repositories
                     ActorIds = actorIds,
                     GenreIds = genreIds
                 });
+            return id;
         }
 
         public void Delete(int id)

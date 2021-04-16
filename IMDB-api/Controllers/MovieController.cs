@@ -36,8 +36,8 @@ namespace IMDB_api.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] MovieRequest movieRequest)
         {
-            _movieService.Add(movieRequest);
-            return StatusCode(StatusCodes.Status201Created);
+            var id =_movieService.Add(movieRequest);
+            return Ok(new { Id = id });
         }
 
         [HttpPut("{id}")]

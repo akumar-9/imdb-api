@@ -11,7 +11,7 @@ namespace IMDB_api.Services.Interfaces
     {
         public GenreResponse Get(int id);
         public IEnumerable<GenreResponse> GetAll();
-        public void Add(GenreRequest genreRequest);
+        public int Add(GenreRequest genreRequest);
         public void Delete(int id);
         public void Update(GenreRequest genreRequest, int id);
     }

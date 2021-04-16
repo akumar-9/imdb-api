@@ -25,10 +25,10 @@ namespace IMDB_api.Services
             _actorRepository = actorRepository;
             _genreRepository = genreRepository;
         }
-        public void Add(MovieRequest movieRequest)
+        public int Add(MovieRequest movieRequest)
         {
            
-            _movieRepository.Add(new Movie
+          return  _movieRepository.Add(new Movie
             {
                 Name = movieRequest.Name,
                 Plot = movieRequest.Plot,
@@ -69,6 +69,7 @@ namespace IMDB_api.Services
             {
                 Id = m.Id,
                 Name = m.Name,
+                YearOfRelease= m.YearOfRelease,
                 Plot = m.Plot,
                 Poster = m.Poster,
                 Producer = _producerRepository.Get(m.ProducerId),

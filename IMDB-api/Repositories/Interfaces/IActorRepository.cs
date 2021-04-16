@@ -11,7 +11,7 @@ namespace IMDB_api.Repositories.Interfaces
     {
         public Actor Get(int id);
         public IEnumerable<Actor> GetAll();
-        public void Add(Actor actor);
+        public int Add(Actor actor);
         public void Delete(int id);
         public void Update(Actor actor);
         public IEnumerable<Actor> GetByMovie(int movieId);

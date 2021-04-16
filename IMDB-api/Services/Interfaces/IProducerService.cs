@@ -11,7 +11,7 @@ namespace IMDB_api.Services.Interfaces
     {
         public ProducerResponse Get(int id);
         public IEnumerable<ProducerResponse> GetAll();
-        public void Add(ProducerRequest producerRequest);
+        public int Add(ProducerRequest producerRequest);
         public void Update(ProducerRequest producerRequest, int id);
         public void Delete(int id);
     }

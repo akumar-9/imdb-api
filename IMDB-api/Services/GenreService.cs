@@ -18,9 +18,9 @@ namespace IMDB_api.Services
         {
             _genreRepository = genreRepository;
         }
-        public void Add(GenreRequest genreRequest)
+        public int Add(GenreRequest genreRequest)
         {
-            _genreRepository.Add(new Genre
+           return _genreRepository.Add(new Genre
             {
                 Name = genreRequest.Name
             });

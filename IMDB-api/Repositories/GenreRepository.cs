@@ -15,10 +15,10 @@ namespace IMDB_api.Repositories
         {
 
         }
-        public void Add(Genre genre)
+        public int Add(Genre genre)
         {
-            const string sql = @"INSERT INTO Genres(Name) VALUES(@Name)";
-            Add(sql, genre);
+            const string sql = @"INSERT INTO Genres(Name) VALUES(@Name); SELECT CAST(SCOPE_IDENTITY() as int)";
+            return Add(sql, genre);
         }
 
         public void Delete(int id)

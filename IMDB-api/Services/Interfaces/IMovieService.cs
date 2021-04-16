@@ -11,7 +11,7 @@ namespace IMDB_api.Services.Interfaces
     {
         public MovieResponse Get(int id);
         public IEnumerable<MovieResponse> GetAll();
-        public void Add(MovieRequest movieRequest);
+        public int Add(MovieRequest movieRequest);
         public void Update(MovieRequest movieRequest, int id);
         public void Delete(int id);
     }

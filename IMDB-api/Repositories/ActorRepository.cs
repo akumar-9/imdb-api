@@ -18,10 +18,10 @@ namespace IMDB_api.Repositories
         {
 
         }
-        public void Add(Actor actor)
+        public int Add(Actor actor)
         {
-           const string sql = @"INSERT INTO Actors(Name,DOB,Sex,Bio) VALUES(@Name,@DOB,@Sex,@Bio)";
-           Add(sql, actor);
+           const string sql = @"INSERT INTO Actors(Name,DOB,Sex,Bio) VALUES(@Name,@DOB,@Sex,@Bio); SELECT CAST(SCOPE_IDENTITY() as int)";
+          return Add(sql, actor);
             
         }
 

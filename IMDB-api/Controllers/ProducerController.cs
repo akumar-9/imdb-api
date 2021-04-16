@@ -1,12 +1,7 @@
-﻿using IMDB_api.Models.DB;
-using IMDB_api.Models.Requests;
+﻿using IMDB_api.Models.Requests;
 using IMDB_api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IMDB_api.Controllers
 {
@@ -37,8 +32,8 @@ namespace IMDB_api.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] ProducerRequest producerRequest)
         {
-            _producerService.Add(producerRequest);
-            return StatusCode(StatusCodes.Status201Created);
+            var id =_producerService.Add(producerRequest);
+            return Ok(new { Id = id });
         }
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] ProducerRequest producerRequest, int id)

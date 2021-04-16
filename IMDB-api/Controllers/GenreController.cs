@@ -36,8 +36,8 @@ namespace IMDB_api.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] GenreRequest genreRequest)
         {
-            _genreService.Add(genreRequest);
-            return StatusCode(StatusCodes.Status201Created);
+            var id =  _genreService.Add(genreRequest);
+            return Ok(new { Id = id });
         }
 
         [HttpPut("{id}")]

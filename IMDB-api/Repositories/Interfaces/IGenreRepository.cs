@@ -10,7 +10,7 @@ namespace IMDB_api.Repositories.Interfaces
     {
         public Genre Get(int id);
         public IEnumerable<Genre> GetAll();
-        public void Add(Genre genre);
+        public int Add(Genre genre);
         public void Delete(int id);
         public void Update(Genre genre);
         public IEnumerable<Genre> GetByMovie(int movieId);
