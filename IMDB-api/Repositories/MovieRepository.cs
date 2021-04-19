@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IMDB_api.Models;
 using Microsoft.Extensions.Options;
+using System.Data;
 
 namespace IMDB_api.Repositories
 {
@@ -35,6 +36,18 @@ namespace IMDB_api.Repositories
                     GenreIds = genreIds
                 });
             return id;
+            //                (OR)
+            //var procedure = "[usp_AddMovie]";
+            //connection.Query(procedure, new
+            // {
+            //    movie.Name,
+            //    movie.Plot,
+            //    movie.YearOfRelease,
+            //    movie.Poster,
+            //    movie.ProducerId,
+            //    ActorIds = actorIds,
+            //    GenreIds = genreIds
+            //}, commandType: CommandType.StoredProcedure);
         }
 
         public void Delete(int id)
@@ -42,6 +55,9 @@ namespace IMDB_api.Repositories
             const string sql = @"EXEC usp_DeleteMovie @MovieId";
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
             connection.Execute(sql, new { MovieId = id });
+            //                (OR)
+            //var procedure = "[usp_AddMovie]";
+            //connection.Query(procedure, new { MovieId = id }, commandType: CommandType.StoredProcedure);
         }
 
         public Movie Get(int id)
@@ -72,6 +88,18 @@ namespace IMDB_api.Repositories
                 ActorIds = actorIds,
                 GenreIds = genreIds
             });
+            //                (OR)
+            //var procedure = "[usp_UpdateMovie]";
+            // connection.Query(procedure, new
+            // {
+            //    movie.Name,
+            //    movie.Plot,
+            //    movie.YearOfRelease,
+            //    movie.Poster,
+            //  movie.ProducerId,
+            //  ActorIds = actorIds,
+            //  GenreIds = genreIds
+            //}, commandType: CommandType.StoredProcedure);
         }
     }
 }
