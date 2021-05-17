@@ -29,28 +29,60 @@ namespace IMDB_api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var movie = _movieService.Get(id);
-            return new JsonResult(movie);
+            try 
+            {
+                var movie = _movieService.Get(id);
+                return new JsonResult(movie);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult Add([FromBody] MovieRequest movieRequest)
         {
-            var id =_movieService.Add(movieRequest);
-            return Ok(new { Id = id });
+            try
+            {
+                var id = _movieService.Add(movieRequest);
+                return Ok(new { Id = id });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] MovieRequest movieRequest, int id)
         {
-            _movieService.Update(movieRequest, id);
-            return Ok(new { Id = id });
+            try
+            {
+                _movieService.Update(movieRequest, id);
+                return Ok(new { Id = id });
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _movieService.Delete(id);
-            return Ok(new { Id = id });
+            try
+            {
+                _movieService.Delete(id);
+                return Ok(new { Id = id });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

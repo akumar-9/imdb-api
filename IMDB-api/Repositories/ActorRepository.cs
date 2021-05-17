@@ -35,7 +35,8 @@ namespace IMDB_api.Repositories
         {
             const string sql = @"SELECT * FROM Actors WHERE Id = @id";
             return Get(sql, id);
-        }
+        }       
+
 
         public IEnumerable<Actor> GetAll()
         {

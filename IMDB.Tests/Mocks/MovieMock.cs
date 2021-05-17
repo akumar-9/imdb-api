@@ -34,14 +34,15 @@ namespace IMDB.Tests.Mocks
 
         public  static void MockGet()
         {
-            movieRepoMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns((int id) => new Movie { 
-            Id=id,
-            Name = "Ford v Ferrari",
-            YearOfRelease = 2019,
-            Plot = "American car designer Carroll Shelby and driver Ken Miles battle corporate interference and the laws",
-            Poster = "poster-url",
-            ProducerId = 1
-            });
+            movieRepoMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns((int id) => GetListOfMovies().First(x => x.Id == id) );
+            //movieRepoMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns((int id) => new Movie { 
+            //Id=id,
+            //Name = "Ford v Ferrari",
+            //YearOfRelease = 2019,
+            //Plot = "American car designer Carroll Shelby and driver Ken Miles battle corporate interference and the laws",
+            //Poster = "poster-url",
+            //ProducerId = 1
+            //});
         }
 
         public static void MockAdd()

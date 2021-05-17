@@ -1,4 +1,5 @@
-﻿using IMDB_api.Models.DB;
+﻿using IMDB_api.Helpers;
+using IMDB_api.Models.DB;
 using IMDB_api.Models.Requests;
 using IMDB_api.Models.Responses;
 using IMDB_api.Repositories.Interfaces;
@@ -27,39 +28,44 @@ namespace IMDB_api.Services
         }
         public int Add(MovieRequest movieRequest)
         {
-           
-          return  _movieRepository.Add(new Movie
+
+            ValidationHelper.ValidateMovie(movieRequest);
+            return  _movieRepository.Add(new Movie
             {
                 Name = movieRequest.Name,
                 Plot = movieRequest.Plot,
                 YearOfRelease = movieRequest.YearOfRelease,
                 Poster = movieRequest.Poster,
                 ProducerId = movieRequest.ProducerId
-            },
-                    String.Join(',', movieRequest.ActorIds),
-                    String.Join(',', movieRequest.GenreIds)
-                );
+            },String.Join(',', movieRequest.ActorIds), String.Join(',', movieRequest.GenreIds));
         }
 
         public void Delete(int id)
         {
-            _movieRepository.Delete(id);
+            if (_movieRepository.Get(id) != null)
+            {
+                _movieRepository.Delete(id);
+                return;
+            }
+            throw new Exception($"Movie with id = {id} doesn't exists");
         }
 
         public MovieResponse Get(int id)
         {
             var movie = _movieRepository.Get(id);
-            return new MovieResponse
-            {
-                Id = movie.Id,
-                Name = movie.Name,
-                YearOfRelease = movie.YearOfRelease,
-                Plot = movie.Plot,
-                Poster = movie.Poster,
-                Producer = _producerRepository.Get(movie.ProducerId),
-                Actors = _actorRepository.GetByMovie(movie.Id).ToList(),
-                Genres = _genreRepository.GetByMovie(movie.Id).ToList()
-            };
+            if(movie != null)
+                return new MovieResponse
+                {
+                    Id = movie.Id,
+                    Name = movie.Name,
+                    YearOfRelease = movie.YearOfRelease,
+                    Plot = movie.Plot,
+                    Poster = movie.Poster,
+                    Producer = _producerRepository.Get(movie.ProducerId),
+                    Actors = _actorRepository.GetByMovie(movie.Id).ToList(),
+                    Genres = _genreRepository.GetByMovie(movie.Id).ToList()
+                };
+            throw new Exception($"Movie with id = {id} doesn't exists");
         }
 
         public IEnumerable<MovieResponse> GetAll()
@@ -80,17 +86,21 @@ namespace IMDB_api.Services
 
         public void Update(MovieRequest movieRequest, int id)
         {
-            _movieRepository.Update(new Movie
-            {   Id= id,
-                Name = movieRequest.Name,
-                Plot = movieRequest.Plot,
-                YearOfRelease = movieRequest.YearOfRelease,
-                Poster = movieRequest.Poster,
-                ProducerId = movieRequest.ProducerId
-            },
-                    String.Join(',', movieRequest.ActorIds),
-                    String.Join(',', movieRequest.GenreIds)
-                );
+            if (_movieRepository.Get(id) != null)
+            {
+                ValidationHelper.ValidateMovie(movieRequest);
+                _movieRepository.Update(new Movie
+                {
+                    Id = id,
+                    Name = movieRequest.Name,
+                    Plot = movieRequest.Plot,
+                    YearOfRelease = movieRequest.YearOfRelease,
+                    Poster = movieRequest.Poster,
+                    ProducerId = movieRequest.ProducerId
+                }, String.Join(',', movieRequest.ActorIds), String.Join(',', movieRequest.GenreIds));
+                return;
+            }
+            throw new Exception($"Movie with id = {id} doesn't exists");
         }
     }
 }

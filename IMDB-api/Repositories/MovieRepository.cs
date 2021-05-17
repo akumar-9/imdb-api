@@ -25,7 +25,7 @@ namespace IMDB_api.Repositories
         {
             const string sql = @"EXEC usp_AddMovie @Name, @Plot, @YearOfRelease, @Poster, @ProducerId, @ActorIds, @GenreIds";           
             using var connection = new SqlConnection(_connectionString.DefaultConnection);                
-                var id = connection.QueryFirst<int>(sql, new
+                var id = connection.QueryFirstOrDefault<int>(sql, new
                 {
                     movie.Name,
                     movie.Plot,
@@ -64,7 +64,7 @@ namespace IMDB_api.Repositories
         {
             const string sql = @"SELECT * FROM Movies WHERE ID=@Id";
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
-            return connection.QueryFirst<Movie>(sql, new { Id = id });
+            return connection.QueryFirstOrDefault<Movie>(sql, new { Id = id });
         }
 
         public IEnumerable<Movie> GetAll()
@@ -78,7 +78,7 @@ namespace IMDB_api.Repositories
         {
             const string sql = @"EXEC usp_UpdateMovie @MovieId, @Name, @Plot, @YearOfRelease, @Poster, @ProducerId, @ActorIds, @GenreIds";
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
-            connection.Execute(sql, new
+            connection.QueryFirstOrDefault(sql, new
             {   MovieId=movie.Id,
                 movie.Name,
                 movie.Plot,

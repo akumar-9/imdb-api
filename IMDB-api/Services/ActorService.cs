@@ -1,4 +1,5 @@
-﻿using IMDB_api.Models.DB;
+﻿using IMDB_api.Helpers;
+using IMDB_api.Models.DB;
 using IMDB_api.Models.Requests;
 using IMDB_api.Models.Responses;
 using IMDB_api.Repositories.Interfaces;
@@ -20,6 +21,7 @@ namespace IMDB_api.Services
         }
         public int Add(ActorRequest actorRequest)
         {
+           ValidationHelper.ValidateActor(actorRequest);
            return  _actorRepository.Add(new Actor
             {
                 Name = actorRequest.Name,
@@ -32,12 +34,18 @@ namespace IMDB_api.Services
 
         public void Delete(int id)
         {
-            _actorRepository.Delete(id);
+            if (_actorRepository.Get(id) != null)
+            {
+                _actorRepository.Delete(id);
+                return;
+            }
+            throw new Exception($"Actor with id = {id} doesn't exists");
         }
 
         public ActorResponse Get(int id)
         {
             var actor =_actorRepository.Get(id);
+            if(actor!=null)
             return new ActorResponse
             {
                 Id = actor.Id,
@@ -46,7 +54,9 @@ namespace IMDB_api.Services
                 Sex = actor.Sex,
                 Bio = actor.Bio
             };
+            throw new Exception($"Actor with id = {id} doesn't exists");
         }
+
 
         public IEnumerable<ActorResponse> GetAll()
         {
@@ -63,13 +73,20 @@ namespace IMDB_api.Services
 
         public void Update(ActorRequest actorRequest, int id)
         {
-            _actorRepository.Update(new Actor
-            {   Id = id,
-                Name = actorRequest.Name,
-                Bio = actorRequest.Bio,
-                Sex = actorRequest.Sex,
-                DOB = actorRequest.DOB
-            });
+            if (_actorRepository.Get(id) != null)
+            {
+                ValidationHelper.ValidateActor(actorRequest);
+                _actorRepository.Update(new Actor
+                {
+                    Id = id,
+                    Name = actorRequest.Name,
+                    Bio = actorRequest.Bio,
+                    Sex = actorRequest.Sex,
+                    DOB = actorRequest.DOB
+                });
+                return;
+            }
+            throw new KeyNotFoundException($"Actor with id = {id} doesn't exists");
         }
     }
 }

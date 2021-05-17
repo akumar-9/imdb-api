@@ -1,4 +1,5 @@
-﻿using IMDB_api.Models.DB;
+﻿using IMDB_api.Helpers;
+using IMDB_api.Models.DB;
 using IMDB_api.Models.Requests;
 using IMDB_api.Models.Responses;
 using IMDB_api.Repositories.Interfaces;
@@ -20,6 +21,7 @@ namespace IMDB_api.Services
         }
         public int Add(GenreRequest genreRequest)
         {
+           ValidationHelper.ValidateGenre(genreRequest);
            return _genreRepository.Add(new Genre
             {
                 Name = genreRequest.Name
@@ -28,17 +30,25 @@ namespace IMDB_api.Services
 
         public void Delete(int id)
         {
-            _genreRepository.Delete(id);
+            var genre = _genreRepository.Get(id);
+            if (genre != null)
+            {
+                _genreRepository.Delete(id);
+                return;
+            }
+            throw new Exception($"Genre with id = {id} doesn't exist");
         }
 
         public GenreResponse Get(int id)
         {
            var genre = _genreRepository.Get(id);
-            return new GenreResponse
-            {   
-                Id = genre.Id,
-                Name = genre.Name
-            };
+            if(genre != null)
+                return new GenreResponse
+                {   
+                    Id = genre.Id,
+                    Name = genre.Name
+                };
+            throw new Exception($"Genre with id = {id} doesn't exist");
         }
 
         public IEnumerable<GenreResponse> GetAll()
@@ -52,9 +62,17 @@ namespace IMDB_api.Services
 
         public void Update(GenreRequest genreRequest, int id)
         {
-            _genreRepository.Update(new Genre { 
-                Id = id,
-                Name = genreRequest.Name });
+            if (_genreRepository.Get(id) != null)
+            {
+                ValidationHelper.ValidateGenre(genreRequest);
+                _genreRepository.Update(new Genre
+                {
+                    Id = id,
+                    Name = genreRequest.Name
+                });
+                return;
+            }
+            throw new Exception($"Genre with id = {id} doesn't exist");
         }
     }
 }

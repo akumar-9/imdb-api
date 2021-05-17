@@ -1,4 +1,5 @@
-﻿using IMDB_api.Models.DB;
+﻿using IMDB_api.Helpers;
+using IMDB_api.Models.DB;
 using IMDB_api.Models.Requests;
 using IMDB_api.Models.Responses;
 using IMDB_api.Repositories.Interfaces;
@@ -22,32 +23,39 @@ namespace IMDB_api.Services
 
         public int Add(ProducerRequest producerRequest)
         {
+            ValidationHelper.ValidateProducer(producerRequest);
             return _producerRepository.Add(new Producer
             {
                 Name = producerRequest.Name,
                 DOB = producerRequest.DOB,
                 Sex = producerRequest.Sex,
                 Bio = producerRequest.Bio,
-            }
-                );
+            });
         }
 
         public void Delete(int id)
         {
-            _producerRepository.Delete(id);
+            if (_producerRepository.Get(id) != null)
+            {
+                _producerRepository.Delete(id);
+                return;
+            }
+            throw new Exception($"Producer with id = {id} doesn't exists");
         }
 
         public ProducerResponse Get(int id)
         {
             var producer = _producerRepository.Get(id);
-            return new ProducerResponse
-            {
-                Id = producer.Id,
-                Name = producer.Name,
-                DOB = producer.DOB,
-                Bio = producer.Bio,
-                Sex = producer.Sex
-            };
+            if(producer!= null)
+                return new ProducerResponse
+                {
+                    Id = producer.Id,
+                    Name = producer.Name,
+                    DOB = producer.DOB,
+                    Bio = producer.Bio,
+                    Sex = producer.Sex
+                };
+            throw new Exception($"Producer with id = {id} doesn't exists");
         }
 
         public IEnumerable<ProducerResponse> GetAll()
@@ -64,14 +72,20 @@ namespace IMDB_api.Services
 
         public void Update(ProducerRequest producerRequest,int id)
         {
-            _producerRepository.Update(new Producer
+            if (_producerRepository.Get(id) != null)
             {
-                Id=id,
-                Name = producerRequest.Name,
-                DOB = producerRequest.DOB,
-                Sex = producerRequest.Sex,
-                Bio = producerRequest.Bio,
-            });  
+                ValidationHelper.ValidateProducer(producerRequest);
+                _producerRepository.Update(new Producer
+                {
+                    Id = id,
+                    Name = producerRequest.Name,
+                    DOB = producerRequest.DOB,
+                    Sex = producerRequest.Sex,
+                    Bio = producerRequest.Bio,
+                });
+                return;
+            }
+            throw new Exception($"Producer with id = {id} doesn't exists");
         }
     }
 }

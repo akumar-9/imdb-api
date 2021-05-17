@@ -138,7 +138,7 @@ testRunner.And("The data in the response should look like this \'[{\"id\":1,\"na
                     "GetActorById"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get actor by Id", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -158,16 +158,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 12
+#line 14
 testRunner.Given("I am a client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
+#line 15
 testRunner.When("I make a GET Request \'/actors/1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
+#line 16
 testRunner.Then("The status code is \'200\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 15
+#line 17
 testRunner.And("The data in the response should look like this \'{\"id\":1,\"name\":\"Christian Bale\",\"" +
                         "bio\":\"British\",\"dob\":\"1979-03-02T00:00:00\",\"sex\":\"Male\"}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -175,17 +175,33 @@ testRunner.And("The data in the response should look like this \'{\"id\":1,\"nam
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Add an actor")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Add an actor")]
         [Xunit.TraitAttribute("FeatureTitle", "Actor")]
         [Xunit.TraitAttribute("Description", "Add an actor")]
         [Xunit.TraitAttribute("Category", "AddAnActor")]
-        public virtual void AddAnActor()
+        [Xunit.InlineDataAttribute("", "", "", "", "400", "", new string[0])]
+        [Xunit.InlineDataAttribute("abc", "", "1979-03-02", "male", "400", "", new string[0])]
+        [Xunit.InlineDataAttribute("abc", "def", "", "male", "400", "", new string[0])]
+        [Xunit.InlineDataAttribute("abc", "def", "1979-03-02", "", "400", "", new string[0])]
+        [Xunit.InlineDataAttribute("abc", "def", "1979-03-02", "male", "200", "{\"id\":1}", new string[0])]
+        public virtual void AddAnActor(string name, string bio, string dob, string sex, string statuscode, string response, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
+            string[] @__tags = new string[] {
                     "AddAnActor"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("name", name);
+            argumentsOfScenario.Add("bio", bio);
+            argumentsOfScenario.Add("dob", dob);
+            argumentsOfScenario.Add("sex", sex);
+            argumentsOfScenario.Add("statuscode", statuscode);
+            argumentsOfScenario.Add("response", response);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add an actor", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 19
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -205,18 +221,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 20
+#line 24
 testRunner.Given("I am a client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 21
-testRunner.When("I make a POST Request to \'/actors\' with the following data \'{\"name\":\"Christian Ba" +
-                        "le\",\"bio\":\"British\",\"dob\":\"1979-03-02T00:00:00\",\"sex\":\"Male\"}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+testRunner.When(string.Format("I make a POST Request to \'/actors\' with the following data \'{{\"name\":\"{0}\",\"bio\":" +
+                            "\"{1}\",\"dob\":\"{2}\",\"sex\":\"{3}\"}}\'", name, bio, dob, sex), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
-testRunner.Then("The status code is \'200\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+testRunner.Then(string.Format("The status code is \'{0}\'", statuscode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 23
-testRunner.And("The data in the response should look like this \'{\"id\":1}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+testRunner.And(string.Format("The data in the response should look like this \'{0}\'", response), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -232,7 +248,7 @@ testRunner.And("The data in the response should look like this \'{\"id\":1}\'", 
                     "UpdateAnActor"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update an actor", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 26
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -252,17 +268,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 39
 testRunner.Given("I am a client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 40
 testRunner.When("I make a PUT Request to \'/actors/1\' with the following data \'{\"name\":\"Christian B" +
                         "ale\",\"bio\":\"British and American\",\"dob\":\"1979-03-02T00:00:00\",\"sex\":\"Male\"}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 41
 testRunner.Then("The status code is \'200\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 30
+#line 42
 testRunner.And("The data in the response should look like this \'{\"id\":1}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -279,7 +295,7 @@ testRunner.And("The data in the response should look like this \'{\"id\":1}\'", 
                     "DeleteAnActor"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete an actor", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 33
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -299,16 +315,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 34
+#line 46
 testRunner.Given("I am a client", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 47
 testRunner.When("I make a DELETE Request to \'/actors/1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 48
 testRunner.Then("The status code is \'200\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 37
+#line 49
 testRunner.And("The data in the response should look like this \'{\"id\":1}\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

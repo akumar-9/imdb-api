@@ -38,12 +38,13 @@ namespace IMDB_api.Repositories
         public T Get(string sql, int id)
         {
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
-            return connection.QueryFirst<T>(sql, new { Id = id });
+            return connection.QueryFirstOrDefault<T>(sql, new { Id = id });
         }
+       
         public void Update(string sql, T entity)
         {
             using var connection = new SqlConnection(_connectionString.DefaultConnection);
-            connection.Execute(sql, entity);
+            connection.QueryFirstOrDefault(sql, entity);
         }
         public IEnumerable<T> GetByMovie(string sql,int movieId)
         {           

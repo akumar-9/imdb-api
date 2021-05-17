@@ -7,6 +7,8 @@ When I make a GET Request '/actors'
 Then The status code is '200'
 And The data in the response should look like this '[{"id":1,"name":"Christian Bale","bio":"British","dob":"1979-03-02T00:00:00","sex":"Male"},{"id":2,"name":"Mila Kunis","bio":"Ukranian","dob":"1973-06-22T00:00:00","sex":"Female"}]'
 
+
+
 @GetActorById
 Scenario: Get actor by Id
 Given I am a client
@@ -15,12 +17,22 @@ Then The status code is '200'
 And The data in the response should look like this '{"id":1,"name":"Christian Bale","bio":"British","dob":"1979-03-02T00:00:00","sex":"Male"}'
 
 
+
+
 @AddAnActor
-Scenario: Add an actor
+Scenario Outline: Add an actor
 Given I am a client
-When I make a POST Request to '/actors' with the following data '{"name":"Christian Bale","bio":"British","dob":"1979-03-02T00:00:00","sex":"Male"}'
-Then The status code is '200'
-And The data in the response should look like this '{"id":1}'
+When I make a POST Request to '/actors' with the following data '{"name":"<name>","bio":"<bio>","dob":"<dob>","sex":"<sex>"}'
+Then The status code is '<statuscode>'
+And The data in the response should look like this '<response>'
+
+Examples: 
+| name | bio | dob        | sex  | statuscode | response |
+|      |     |            |      | 400        |          |
+| abc  |     | 1979-03-02 | male | 400        |          |
+| abc  | def |            | male | 400        |          |
+| abc  | def | 1979-03-02 |      | 400        |          |
+| abc  | def | 1979-03-02 | male | 200        | {"id":1} |
 
 @UpdateAnActor
 Scenario: Update an actor

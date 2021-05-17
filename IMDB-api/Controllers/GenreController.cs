@@ -29,28 +29,61 @@ namespace IMDB_api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var genre = _genreService.Get(id);
-            return new JsonResult(genre);
+            try 
+            {
+                var genre = _genreService.Get(id);
+                return new JsonResult(genre);
+            }
+            catch(Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult Add([FromBody] GenreRequest genreRequest)
         {
-            var id =  _genreService.Add(genreRequest);
-            return Ok(new { Id = id });
+            try
+            {
+                var id = _genreService.Add(genreRequest);
+                return Ok(new { Id = id });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] GenreRequest genreRequest, int id)
         {
-            _genreService.Update(genreRequest,id);
-            return Ok(new { Id = id });
+            try
+            {
+                _genreService.Update(genreRequest, id);
+                return Ok(new { Id = id });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _genreService.Delete(id);
-            return Ok(new { Id = id });
+            try
+            {
+                _genreService.Delete(id);
+                return Ok(new { Id = id });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
