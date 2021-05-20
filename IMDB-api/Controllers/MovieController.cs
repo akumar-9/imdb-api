@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Storage;
 
 namespace IMDB_api.Controllers
 {
@@ -53,6 +54,19 @@ namespace IMDB_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile poster)
+        {
+            if (poster == null || poster.Length == 0)
+                return Content("file not selected");
+            var task = await new FirebaseStorage("imdb-38a5a.appspot.com")
+            .Child("posters")
+            .Child(Guid.NewGuid().ToString() + ".jpg")
+            .PutAsync(poster.OpenReadStream());
+            return Ok(task);
+        }
+       
 
         [HttpPut("{id}")]
         public IActionResult Update([FromBody] MovieRequest movieRequest, int id)

@@ -21,6 +21,7 @@ namespace IMDB_api
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -45,7 +46,15 @@ namespace IMDB_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IMDB_api", Version = "v1" });
             });
-            services.AddCors(options => options.AddDefaultPolicy(builder =>  builder.AllowAnyOrigin()));
+            //   services.AddCors(options => options.AddDefaultPolicy(builder =>  builder.AllowAnyOrigin()));
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://locahost:5500", "http://127.0.0.1:5500").AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +71,7 @@ namespace IMDB_api
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(MyAllowSpecificOrigins);
             
             app.UseAuthorization();
 
