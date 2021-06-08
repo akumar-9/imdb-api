@@ -27,8 +27,6 @@ namespace IMDB_api.Helpers
             throw new Exception("Producer's bio cannot be null");
                     if (string.IsNullOrEmpty(producerRequest.Sex))
             throw new Exception("Producer's sex cannot be null");
-            //        if (!producerRequest.Sex.ToLower().Equals("male") || !producerRequest.Sex.ToLower().Equals("female"))
-            //throw new Exception("Possible options for sex are male or female");
                     if (producerRequest.DOB.CompareTo(DateTime.Today) > 0)
             throw new Exception("Producer should atleast be a year old");
         }
@@ -40,8 +38,7 @@ namespace IMDB_api.Helpers
 				throw new Exception("Movie's plot cannot be null");
 			if(string.IsNullOrEmpty(movieRequest.Poster))
 				throw new Exception("Movie's poster url cannot be null");
-			//if (movieRequest.YearOfRelease < DateTime.Now.Year && movieRequest.YearOfRelease > 1900)
-			//	throw new Exception($"The movie's release year must be between 1900 and {DateTime.Now.Year}");
+			
             if (movieRequest.ActorIds.Count < 0)
                 throw new Exception("The movie must have atleast one actor id");
             if (movieRequest.GenreIds.Count < 0)
